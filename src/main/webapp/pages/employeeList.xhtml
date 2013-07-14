@@ -1,0 +1,101 @@
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Welcome to JSF_Example</title>
+<style>
+.errorMessage {
+	font: bold;
+	color: red;
+}
+
+.row1{
+background: gray;
+}
+
+.row2{
+background: silver;
+}
+
+.tableHeader{
+background: black;
+color: white;
+}
+.errorMessage {
+	font: bold;
+	color: red;
+}
+</style>
+</h:head>
+<h:body>
+	<h:form prependId="false">				
+		<h:dataTable value="#{employeeMB.employeeList}" id="tableId" var="data" rowClasses="row1,row2" headerClass="tableHeader">
+			<h:column>
+				<f:facet name="header">
+					Employee-ID
+				</f:facet>
+				#{data.employeeNumber}
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">
+					Email
+				</f:facet>
+				#{data.email}
+			</h:column>			
+			<h:column>
+				<f:facet name="header">
+					Extension
+				</f:facet>
+				#{data.extension}
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					First Name
+				</f:facet>
+				#{data.firstName}
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					Employee LastName
+				</f:facet>
+				#{data.lastName}
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					Job Title
+				</f:facet>
+				#{data.jobTitle}
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					Report To
+				</f:facet>
+			   
+			   <h:outputText rendered="#{data.reportsTo != null}" value="#{data.reportsTo.lastName}, #{data.reportsTo.firstName}"/>
+			   <h:outputText rendered="#{data.reportsTo == null}" style="color:white" value="No Manager"/>
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">					
+				</f:facet>
+				<h:commandButton value="Edit" id="editButtonId" action="#{employeeMB.goToEditEmployee(data)}" immediate="true"/>
+				<h:commandButton value="Delete" id="deleteButtonId" actionListener="#{employeeMB.deleteEmployee(data)}" immediate="true"/>
+				<h:button value="Request using Get" id="getButtonId" outcome="addEditEmployee?employeeId=#{data.employeeNumber}"/>
+			</h:column>		
+		</h:dataTable>		
+		<h:commandButton value="Add New Employee" action="#{employeeMB.goToAddEmployee()}" immediate="true"/>
+		
+		<br/>
+		Bean validation level:
+		<br/>
+		<h:outputLabel for="SearchSizeId" value="Search Size"/> 
+		<h:inputText id="SearchSizeId" value="#{employeeMB.resultSize}"/>
+		<h:message for="SearchSizeId" styleClass="errorMessage"/>
+		<h:commandButton value="Validat"/>
+	</h:form>
+</h:body>
+</html>

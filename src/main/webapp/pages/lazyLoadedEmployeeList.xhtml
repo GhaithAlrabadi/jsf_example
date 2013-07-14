@@ -1,0 +1,81 @@
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Welcome to JSF_Example</title>
+	<style>
+.errorMessage {
+	font: bold;
+	color: red;
+}
+
+.row1{
+background: gray;
+}
+
+.row2{
+background: silver;
+}
+
+.tableHeader{
+background: black;
+color: white;
+}
+.errorMessage {
+	font: bold;
+	color: red;
+}
+</style>
+</h:head>
+<h:body>
+	<h:form prependId="false">	                 
+          <p:dataTable var="data" rowStyleClass="row1,row2" id="datatableLazy" emptyMessage="There is no result found for this search"
+          			   value="#{lazyLoadedEmployeeMB.lazyLoadedTableList}"
+          			   paginator="true" rows="10" lazy="true"
+          			   paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"   
+          			   rowsPerPageTemplate="1,5,10,15,20,25,30,35" >
+			<p:column headerText="Employee-ID" sortBy="#{data.employeeNumber}" filterBy="#{data.employeeNumber}">
+				<h:outputText value = "#{data.employeeNumber}"/>
+			</p:column>			
+			<p:column headerText="Email" sortBy="#{data.email}" filterBy="#{data.email}" >				
+				<h:outputText value = "#{data.email}"/>
+			</p:column>			
+			<p:column headerText="Extension" sortBy="#{data.extension}" filterBy="#{data.extension}">
+				<h:outputText value = "#{data.extension}"/>
+			</p:column>
+			<p:column headerText="First Name" sortBy="#{data.firstName}" filterBy="#{data.firstName}">
+				<h:outputText value = "#{data.firstName}"/>
+			</p:column>
+			<p:column headerText="Employee LastName" sortBy="#{data.lastName}" filterBy="#{data.lastName}">
+				<h:outputText value = "#{data.lastName}"/>
+			</p:column>
+			<p:column headerText="Job Title" sortBy="#{data.jobTitle}" filterBy="#{data.jobTitle}">				
+				<h:outputText value = "#{data.jobTitle}"/>
+			</p:column>
+			<p:column headerText="Report To">			   
+			   <h:outputText rendered="#{data.reportsTo != null}" value="#{data.reportsTo.lastName}, #{data.reportsTo.firstName}"/>
+			   <h:outputText rendered="#{data.reportsTo == null}" style="color:red" value="No Manager"/>
+			</p:column>
+			
+			<p:column>
+				<f:facet name="header">					
+				</f:facet>
+				<p:commandButton value="Edit" id="editButtonId" action="#{employeeMB.goToEditEmployee(data)}" ajax="false" immediate="true"/>
+				<p:commandButton value="Delete" id="deleteButtonId" actionListener="#{employeeMB.deleteEmployee(data)}" ajax="false" immediate="true"/>
+				<p:button value="Get" id="getButtonId" outcome="addEditEmployee?employeeId=#{data.employeeNumber}" ajax="false"/>
+			</p:column>				
+		</p:dataTable>
+		
+		<h:commandLink value="Export table as csv" immediate="true">
+		    <p:dataExporter type="csv" target="datatableLazy" fileName="employees"/>  
+		</h:commandLink>  	
+		<br/>	  
+		<h:commandLink value="Export table as pdf" immediate="true">  		    
+		    <p:dataExporter type="pdf" target="datatableLazy" fileName="employees"/>  
+		</h:commandLink>  			
+	</h:form>
+</h:body>
+</html>

@@ -1,0 +1,161 @@
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Welcome to JSF_Example</title>
+	<style>
+.errorMessage {
+	font: bold;
+	color: red;
+}
+.inputStyle{
+width: 300px;
+background-color:silver;
+}
+</style>
+</h:head>
+
+<f:metadata>
+	<f:viewParam name="employeeId" value="#{employeeMB.employeeNumber}"/>
+</f:metadata>
+<h:body>
+	<h:form prependId="false">
+		<table border="1">
+			<tr >
+				<td>
+					<h:outputLabel for="Fname" value="Employee FirstName: " /> 
+					<h:inputText requiredMessage="Employee FirstName is required" 
+								 validatorMessage="Length between 1 and 20" 
+								 value="#{employeeMB.employee.firstName}"
+								 styleClass="inputStyle"
+								 required="true" id="Fname">
+							<f:validateLength minimum="1" maximum="20"/>
+					</h:inputText>
+				</td>
+				<td>
+					<h:message styleClass="errorMessage" for="Fname" />
+				</td>
+			</tr>
+			
+			<tr>
+				<td>
+					<h:outputLabel for="Lname" value="Employee LastName: " /> 
+					<h:inputText requiredMessage="Employee LastName is required" 
+								 validatorMessage="Length between 1 and 20" 
+								 value="#{employeeMB.employee.lastName}"
+								 styleClass="inputStyle"
+								 required="true" id="Lname">
+							<f:validateLength minimum="1" maximum="20"/>
+					</h:inputText>
+				</td>
+				<td>
+					<h:message styleClass="errorMessage" for="Lname" />
+				</td>
+			</tr>
+			
+			
+			<tr>
+				<td>
+					<h:outputLabel for="email" value="Email: " /> 
+					<h:inputText validatorMessage="Wrong email fomrat"
+								 requiredMessage="Email is required" 
+								 value="#{employeeMB.employee.email}"
+								 styleClass="inputStyle"
+								 required="true" id="email">
+						<f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.(com|net|org|edu)" />
+					</h:inputText>
+				</td>
+				<td>
+					<h:message styleClass="errorMessage" for="email" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<h:outputLabel for="gender" value="Gender: " /> 
+					<h:selectOneRadio id="gender" required="true" 
+									  value="#{employeeMB.employee.gender}" 
+									  styleClass="inputStyle" requiredMessage="Please Select Gender">
+						<f:selectItem itemValue="m" itemLabel="Male" />
+						<f:selectItem itemValue="f" itemLabel="Female" />
+					</h:selectOneRadio>
+				</td>
+				<td>
+					<h:message styleClass="errorMessage" for="gender" />
+				</td>
+			</tr>
+			
+			
+			<tr>
+				<td>
+					<h:outputLabel for="manager" value="Manager: " /> 
+					<h:selectOneMenu value="#{employeeMB.employee.reportsTo.employeeNumber}" id="manager">
+						<f:selectItem itemLabel="--" itemValue="-1"/>
+						<f:selectItems value="#{employeeMB.employeeList}" var="manager" 
+									   itemValue="#{manager.employeeNumber}" itemLabel="#{manager.lastName}, #{manager.firstName}"/>
+					</h:selectOneMenu>
+				</td>
+				<td>
+					
+				</td>
+			</tr>
+			
+			<tr>
+				<td>
+					<h:outputLabel for="extension" value="Extension: " /> 
+					<h:inputText validatorMessage="Wrong extension fomrat XXX-XXX-XXXX is required"
+								 maxlength="12"
+								 requiredMessage="Extension is required" 
+								 value="#{employeeMB.employee.extension}"
+								 styleClass="inputStyle"
+								 required="true" id="extension">
+						
+					</h:inputText>
+				</td>
+				<td>
+					<h:message styleClass="errorMessage" for="extension" />
+				</td>
+			</tr>
+			
+			<tr>
+				<td>
+					<h:outputLabel for="jobTitle" value="JobTitle " /> 
+					<h:inputText requiredMessage="JobTitle is required" 
+								 value="#{employeeMB.employee.jobTitle}"
+								 styleClass="inputStyle"
+								 required="true" id="jobTitle">
+						
+					</h:inputText>
+				</td>
+				<td>
+					<h:message styleClass="errorMessage" for="jobTitle" />
+				</td>
+			</tr>
+			
+			
+			<tr>
+				<td>
+					<h:outputLabel for="officeCode" value="OfficeCode " /> 
+					<h:inputText requiredMessage="OfficeCode is required" maxlength="10"
+								 value="#{employeeMB.employee.officeCode}"
+								 styleClass="inputStyle"
+								 required="true" id="officeCode">
+						
+					</h:inputText>
+				</td>
+				<td>
+					<h:message styleClass="errorMessage" for="officeCode" />
+				</td>
+			</tr>
+			
+			
+			
+			
+		</table>
+		<br />
+		<h:commandButton value="Apply"	action="#{employeeMB.save()}" />
+		<h:button value="Cancel" outcome="employeeList"/>
+	</h:form>
+</h:body>
+</html>
